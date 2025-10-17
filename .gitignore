@@ -53,13 +53,8 @@ Thumbs.db
 # 日志文件
 *.log
 
-# 测试生成的音频文件
-*.wav
-*.mp3
-*.m4a
-test_*.wav
-output*.wav
-
 # 临时文件
 *.tmp
 *.temp
+temp_filelist.txt
+filelist.txt
