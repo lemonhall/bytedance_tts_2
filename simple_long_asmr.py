@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """
-简化版长ASMR生成器 - 直接输出完整MP3
+简化版长ASMR生成器 - 分段生成+拼接
 基于最佳参数配置，生成单个长时间MP3文件
+支持分段生成，保持上下文一致性
 """
 from tts_http_v3 import TTSHttpClient
 import os
+import subprocess
 
 # 推荐使用豆包TTS 2.0音色
 DEFAULT_SPEAKER = os.getenv("VOLCENGINE_VOICE_TYPE", "zh_female_vv_uranus_bigtts")
@@ -23,7 +25,125 @@ BEST_ASMR_CONFIG = {
 # 最佳上下文设置
 BEST_ASMR_CONTEXT = ["用最亲密的ASMR耳语声", "就像情侣间的悄悄话", "声音要很贴近"]
 
-def generate_single_long_asmr():
+def split_text_into_segments(text, num_segments=5):
+    """
+    将文本分成指定数量的段落
+    尽量保证每段的长度均匀
+    """
+    # 按照中文句号、感叹号、问号等标点分割
+    import re
+    # 替换常见的句子结尾标点
+    text = text.strip()
+    
+    # 按标点符号分割成句子
+    sentences = re.split(r'([。！？，、；：])', text)
+    
+    # 重新组合句子（保留标点）
+    combined_sentences = []
+    i = 0
+    while i < len(sentences):
+        if i + 1 < len(sentences) and sentences[i + 1] in '。！？，、；：':
+            combined_sentences.append(sentences[i] + sentences[i + 1])
+            i += 2
+        elif sentences[i].strip():
+            combined_sentences.append(sentences[i])
+            i += 1
+        else:
+            i += 1
+    
+    if not combined_sentences:
+        # 如果没有分割出句子，直接按字符长度分割
+        char_count = len(text)
+        segment_len = char_count // num_segments
+        segments = []
+        for i in range(num_segments):
+            start = i * segment_len
+            if i == num_segments - 1:
+                segments.append(text[start:].strip())
+            else:
+                segments.append(text[start:start + segment_len].strip())
+        return segments
+    
+    # 根据句子数量分段
+    total_sentences = len(combined_sentences)
+    sentences_per_segment = max(1, total_sentences // num_segments)
+    
+    segments = []
+    for i in range(num_segments):
+        start_idx = i * sentences_per_segment
+        if i == num_segments - 1:
+            # 最后一段包含所有剩余的句子
+            segment_text = ''.join(combined_sentences[start_idx:]).strip()
+        else:
+            end_idx = start_idx + sentences_per_segment
+            segment_text = ''.join(combined_sentences[start_idx:end_idx]).strip()
+        
+        if segment_text:
+            segments.append(segment_text)
+    
+    return segments
+
+
+def merge_audio_files(audio_files, output_file):
+    """
+    使用ffmpeg将多个MP3文件合并成一个
+    """
+    try:
+        # 创建ffmpeg的concat demuxer列表文件
+        concat_file = "concat_list.txt"
+        
+        print(f"  📝 创建合并列表...")
+        with open(concat_file, 'w', encoding='utf-8') as f:
+            for audio_file in audio_files:
+                if os.path.exists(audio_file):
+                    # Windows路径需要转义
+                    f.write(f"file '{os.path.abspath(audio_file)}'\n")
+        
+        print(f"  🔗 使用ffmpeg合并音频...")
+        # 使用ffmpeg的concat demuxer合并
+        cmd = [
+            'ffmpeg',
+            '-f', 'concat',
+            '-safe', '0',
+            '-i', concat_file,
+            '-c', 'copy',  # 复制编码，不重新编码
+            '-y',  # 覆盖输出文件
+            output_file
+        ]
+        
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            print(f"  ✅ 合并完成: {output_file}")
+            
+            # 清理临时文件
+            for audio_file in audio_files:
+                if os.path.exists(audio_file) and audio_file != output_file:
+                    try:
+                        os.remove(audio_file)
+                        print(f"  🗑️  清理临时文件: {audio_file}")
+                    except:
+                        pass
+            
+            # 清理concat列表文件
+            try:
+                os.remove(concat_file)
+                print(f"  🗑️  清理合并列表: {concat_file}")
+            except:
+                pass
+            
+            return True
+        else:
+            print(f"  ❌ ffmpeg执行失败")
+            print(f"  错误: {result.stderr}")
+            return False
+            
+    except Exception as e:
+        print(f"  ❌ 合并失败: {e}")
+        return False
+
+
+def generate_single_long_asmr(num_segments=5):
     """生成单个长时间ASMR音频"""
     
     # 长文案 - 约10分钟助眠内容
@@ -88,30 +208,64 @@ def generate_single_long_asmr():
     client = TTSHttpClient()
     
     try:
-        print(f"\n🎧 生成长时间助眠ASMR音频")
+        print(f"\n🎧 生成长时间助眠ASMR音频（分段模式）")
         print(f"📝 文本长度: {len(long_asmr_text)} 字符")
-        print(f"📁 输出文件: long_asmr_sleep_relaxation.mp3")
+        print(f"� 分段数: {num_segments}")
+        print(f"�📁 输出文件: long_asmr_sleep_relaxation.mp3")
         print(f"🎵 使用音色: {DEFAULT_SPEAKER}")
         print(f"⚙️ 参数配置: {BEST_ASMR_CONFIG}")
+        print(f"📌 上下文: {BEST_ASMR_CONTEXT}")
         print("=" * 60)
         
-        success = client.synthesize_speech(
-            text=long_asmr_text.strip(),
-            output_file="long_asmr_sleep_relaxation.mp3",
-            speaker=DEFAULT_SPEAKER,
-            context_texts=BEST_ASMR_CONTEXT,
-            **BEST_ASMR_CONFIG
-        )
+        # 分段文本
+        print("\n📖 正在分段文本...")
+        segments = split_text_into_segments(long_asmr_text.strip(), num_segments)
         
-        if success:
+        print(f"✅ 分段完成，共{len(segments)}段：")
+        for i, segment in enumerate(segments, 1):
+            print(f"  第{i}段: {len(segment)}字符")
+        
+        # 为每段生成音频
+        print("\n🎵 正在生成各段音频...")
+        audio_files = []
+        
+        for i, segment in enumerate(segments, 1):
+            segment_file = f"asmr_segment_{i}.mp3"
+            print(f"\n  【第 {i}/{num_segments} 段】")
+            print(f"  📝 文本长度: {len(segment)} 字符")
+            
+            success = client.synthesize_speech(
+                text=segment,
+                output_file=segment_file,
+                speaker=DEFAULT_SPEAKER,
+                context_texts=BEST_ASMR_CONTEXT,  # 每段都使用相同的上下文
+                **BEST_ASMR_CONFIG
+            )
+            
+            if success:
+                print(f"  ✅ 第{i}段生成成功: {segment_file}")
+                audio_files.append(segment_file)
+            else:
+                print(f"  ❌ 第{i}段生成失败")
+                return False
+        
+        # 合并所有音频
+        print("\n🔗 正在合并音频文件...")
+        if merge_audio_files(audio_files, "long_asmr_sleep_relaxation.mp3"):
             print(f"\n✅ 长时间助眠ASMR音频生成成功!")
             print(f"📁 文件: long_asmr_sleep_relaxation.mp3")
             print(f"💡 建议睡前使用耳机聆听，有助于放松入眠")
+            print(f"📊 生成方式: 分{num_segments}段生成，相同上下文约束保证一致性")
+            return True
         else:
-            print(f"❌ 生成失败")
+            print(f"❌ 音频合并失败")
+            return False
             
     except Exception as e:
         print(f"❌ 生成过程出错: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
     finally:
         client.close()
 
@@ -125,4 +279,4 @@ if __name__ == "__main__":
         print("VOLCENGINE_ACCESS_TOKEN=你的AccessToken")
         exit(1)
     
-    generate_single_long_asmr()
+    generate_single_long_asmr(num_segments=5)

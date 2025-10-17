@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对话TTS编辑器</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1>🎙️ 对话TTS编辑器</h1>
+            <div class="header-actions">
+                <button id="newProjectBtn" class="btn btn-primary">新建工程</button>
+                <button id="loadProjectBtn" class="btn btn-secondary">加载工程</button>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 步骤1: 输入原始对话 -->
+            <section id="stepInput" class="step-panel active">
+                <h2>📝 输入对话文本</h2>
+                <p class="hint">输入2-3个人的对话片段,每句话一行。可以不标记说话人,AI会自动识别。</p>
+                <textarea id="inputText" placeholder="例如:
+你好,最近怎么样?
+挺好的,就是工作有点累。
+那要注意休息啊!别太拼命了。
+谢谢关心,我会的。"></textarea>
+                <div class="actions">
+                    <button id="analyzeBtn" class="btn btn-primary btn-large">
+                        🤖 AI分析对话
+                    </button>
+                </div>
+            </section>
+
+            <!-- 步骤2: 编辑对话参数 -->
+            <section id="stepEdit" class="step-panel">
+                <div class="edit-header">
+                    <h2>✏️ 编辑对话参数</h2>
+                    <div class="edit-actions">
+                        <button id="backToInputBtn" class="btn btn-secondary">返回编辑文本</button>
+                        <button id="generateAllBtn" class="btn btn-success btn-large">
+                            🎵 生成全部音频
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 工程信息 -->
+                <div class="project-info">
+                    <input type="text" id="projectTitle" placeholder="工程标题" class="project-title-input">
+                    <span class="project-meta" id="projectMeta"></span>
+                </div>
+
+                <!-- 说话人列表 -->
+                <div class="speakers-section">
+                    <h3>👥 说话人</h3>
+                    <div id="speakersList" class="speakers-list"></div>
+                </div>
+
+                <!-- 对话列表 -->
+                <div class="dialogues-section">
+                    <h3>💬 对话内容</h3>
+                    <div id="dialoguesList" class="dialogues-list"></div>
+                </div>
+            </section>
+
+            <!-- 步骤3: 音频预览 -->
+            <section id="stepPreview" class="step-panel">
+                <h2>🎧 音频预览</h2>
+                <div class="preview-container">
+                    <div id="audioPlayer" class="audio-player">
+                        <audio id="finalAudio" controls></audio>
+                        <div class="audio-info">
+                            <p>最终合成音频</p>
+                            <a id="downloadLink" class="btn btn-primary" download>下载音频</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button id="backToEditBtn" class="btn btn-secondary">返回编辑</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- 加载提示 -->
+        <div id="loadingOverlay" class="loading-overlay hidden">
+            <div class="loading-spinner"></div>
+            <p id="loadingText">处理中...</p>
+        </div>
+
+        <!-- 工程列表模态框 -->
+        <div id="projectsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📂 我的工程</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="projectsListContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
