@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "title": "对话_20251017_163512",
+  "title": "对话_20251017_164902",
   "original_text": "“早啊，看你眼圈有点黑，昨晚没睡好？”\n\n“别提了，隔壁装修，电钻声七点就开始了。”\n\n“我的天，那也太折磨人了。要不试试耳塞？”\n\n“看来是得买了，今晚就试试看。”",
   "speakers": [
     {
@@ -8,14 +8,14 @@
       "name": "说话人A",
       "gender": "male",
       "age_group": "adult",
-      "voice_type": "zh_male_wennuanahu_moon_bigtts"
+      "voice_type": "zh_female_vv_uranus_bigtts"
     },
     {
       "id": "speaker_2",
       "name": "说话人B",
       "gender": "male",
       "age_group": "adult",
-      "voice_type": "zh_male_wennuanahu_moon_bigtts"
+      "voice_type": "zh_male_ruyayichen_saturn_bigtts"
     }
   ],
   "dialogues": [
@@ -28,7 +28,7 @@
       "volume_ratio": 1.0,
       "pitch_ratio": 1.0,
       "context": null,
-      "audio_file": null,
+      "audio_file": "dialogue_output\\line_000.wav",
       "duration": null
     },
     {
@@ -40,7 +40,7 @@
       "volume_ratio": 1.0,
       "pitch_ratio": 1.0,
       "context": "早啊，看你眼圈有点黑，昨晚没睡好？",
-      "audio_file": null,
+      "audio_file": "dialogue_output\\line_001.wav",
       "duration": null
     },
     {
@@ -52,7 +52,7 @@
       "volume_ratio": 1.0,
       "pitch_ratio": 1.0,
       "context": "别提了，隔壁装修，电钻声七点就开始了。",
-      "audio_file": null,
+      "audio_file": "dialogue_output\\line_002.wav",
       "duration": null
     },
     {
@@ -64,11 +64,11 @@
       "volume_ratio": 1.0,
       "pitch_ratio": 1.0,
       "context": "我的天，那也太折磨人了。要不试试耳塞？",
-      "audio_file": null,
+      "audio_file": "dialogue_output\\line_003.wav",
       "duration": null
     }
   ],
-  "output_audio": null,
-  "created_at": "2025-10-17T16:35:12.409112",
-  "updated_at": "2025-10-17T16:35:12.409112"
+  "output_audio": "dialogue_output/8a4fed15-fae4-4f05-b98e-4e86db6487ea_final.wav",
+  "created_at": "2025-10-17T16:49:02.066129",
+  "updated_at": "2025-10-17T16:49:36.092550"
 }

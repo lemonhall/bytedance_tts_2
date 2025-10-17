@@ -1,0 +1,74 @@
+{
+  "version": "1.0",
+  "title": "对话_20251017_165107",
+  "original_text": "“早啊，看你眼圈有点黑，昨晚没睡好？”\n\n“别提了，隔壁装修，电钻声七点就开始了。”\n\n“我的天，那也太折磨人了。要不试试耳塞？”\n\n“看来是得买了，今晚就试试看。”",
+  "speakers": [
+    {
+      "id": "speaker_1",
+      "name": "说话人A",
+      "gender": "male",
+      "age_group": "adult",
+      "voice_type": "zh_male_ruyayichen_saturn_bigtts"
+    },
+    {
+      "id": "speaker_2",
+      "name": "说话人B",
+      "gender": "male",
+      "age_group": "adult",
+      "voice_type": "zh_male_ruyayichen_saturn_bigtts"
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "line_0",
+      "speaker_id": "speaker_1",
+      "text": "早啊，看你眼圈有点黑，昨晚没睡好？",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": null,
+      "audio_file": null,
+      "duration": null
+    },
+    {
+      "id": "line_1",
+      "speaker_id": "speaker_2",
+      "text": "别提了，隔壁装修，电钻声七点就开始了。",
+      "emotion": "沮丧",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "早啊，看你眼圈有点黑，昨晚没睡好？",
+      "audio_file": null,
+      "duration": null
+    },
+    {
+      "id": "line_2",
+      "speaker_id": "speaker_1",
+      "text": "我的天，那也太折磨人了。要不试试耳塞？",
+      "emotion": "惊讶",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "别提了，隔壁装修，电钻声七点就开始了。",
+      "audio_file": null,
+      "duration": null
+    },
+    {
+      "id": "line_3",
+      "speaker_id": "speaker_2",
+      "text": "看来是得买了，今晚就试试看。",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "我的天，那也太折磨人了。要不试试耳塞？",
+      "audio_file": null,
+      "duration": null
+    }
+  ],
+  "output_audio": null,
+  "created_at": "2025-10-17T16:51:07.023294",
+  "updated_at": "2025-10-17T16:51:07.023294"
+}

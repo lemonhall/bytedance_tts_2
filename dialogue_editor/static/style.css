@@ -156,6 +156,15 @@ body {
     color: white;
 }
 
+.btn-info {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #2563eb;
+}
+
 .btn-danger {
     background: var(--danger-color);
     color: white;
@@ -186,6 +195,12 @@ body {
 .edit-actions {
     display: flex;
     gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.edit-actions .btn {
+    white-space: nowrap;
 }
 
 .project-info {
@@ -272,6 +287,61 @@ body {
     font-size: 12px;
     background: var(--secondary-color);
     color: white;
+}
+
+/* 说话人音色配置 */
+.speaker-voice-config {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.speaker-voice-config label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.speaker-voice-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.speaker-voice-select:hover {
+    border-color: var(--primary-color);
+}
+
+.speaker-voice-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.speaker-voice-select optgroup {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.speaker-voice-select option {
+    padding: 4px;
+}
+
+.voice-info {
+    margin-top: 6px;
+}
+
+.voice-info small {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-style: italic;
 }
 
 /* 对话列表 */

@@ -205,6 +205,45 @@ async def update_line(project_id: str, line_id: str, updates: dict = Body(...)):
     return {"success": True, "message": "更新成功"}
 
 
+@app.put("/api/projects/{project_id}/speaker/{speaker_id}")
+async def update_speaker(project_id: str, speaker_id: str, updates: dict = Body(...)):
+    """更新说话人信息"""
+    project_file = PROJECTS_DIR / f"{project_id}.json"
+    
+    if not project_file.exists():
+        raise HTTPException(status_code=404, detail="工程不存在")
+    
+    # 读取工程
+    with open(project_file, "r", encoding="utf-8") as f:
+        project_data = json.load(f)
+    
+    # 查找并更新说话人
+    found = False
+    for speaker in project_data["speakers"]:
+        if speaker["id"] == speaker_id:
+            # 验证音色ID是否有效
+            if "voice_type" in updates:
+                from tts_config import VOICE_TYPE_DETAILS
+                if updates["voice_type"] not in VOICE_TYPE_DETAILS:
+                    raise HTTPException(status_code=400, detail="无效的音色ID")
+            
+            speaker.update(updates)
+            found = True
+            break
+    
+    if not found:
+        raise HTTPException(status_code=404, detail="说话人不存在")
+    
+    # 更新时间戳
+    project_data["updated_at"] = datetime.now().isoformat()
+    
+    # 保存
+    with open(project_file, "w", encoding="utf-8") as f:
+        json.dump(project_data, f, ensure_ascii=False, indent=2)
+    
+    return {"success": True, "message": "更新成功"}
+
+
 @app.post("/api/projects/{project_id}/generate")
 async def generate_project(project_id: str):
     """生成整个工程的音频"""

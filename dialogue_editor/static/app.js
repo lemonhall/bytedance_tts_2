@@ -168,11 +168,42 @@ function renderEditPage() {
     elements.projectTitle.value = project.title;
     elements.projectMeta.textContent = `共 ${project.speakers.length} 个说话人, ${project.dialogues.length} 句对话`;
     
+    // 检查是否已生成音频，显示/隐藏预览按钮
+    updatePreviewButton();
+    
     // 渲染说话人
     renderSpeakers(project.speakers);
     
     // 渲染对话
     renderDialogues(project.dialogues, project.speakers);
+}
+
+// 更新预览按钮显示
+function updatePreviewButton() {
+    const hasGeneratedAudio = state.currentProject?.output_audio;
+    
+    // 查找或创建预览按钮
+    let previewBtn = document.getElementById('previewAudioBtn');
+    
+    if (hasGeneratedAudio) {
+        if (!previewBtn) {
+            // 创建预览按钮
+            previewBtn = document.createElement('button');
+            previewBtn.id = 'previewAudioBtn';
+            previewBtn.className = 'btn btn-info';
+            previewBtn.innerHTML = '🎧 预览已生成音频';
+            previewBtn.addEventListener('click', handlePreviewAudio);
+            
+            // 插入到"生成全部音频"按钮之前
+            const generateBtn = elements.generateAllBtn;
+            generateBtn.parentNode.insertBefore(previewBtn, generateBtn);
+        }
+        previewBtn.style.display = 'inline-block';
+    } else {
+        if (previewBtn) {
+            previewBtn.style.display = 'none';
+        }
+    }
 }
 
 // 渲染说话人
@@ -181,13 +212,31 @@ function renderSpeakers(speakers) {
         const icon = speaker.gender === 'male' ? '👨' : 
                      speaker.gender === 'female' ? '👩' : '👶';
         
+        // 获取当前音色的详细信息
+        const currentVoice = state.config.voice_details[speaker.voice_type];
+        const voiceName = currentVoice ? currentVoice.name : '未知';
+        
+        // 生成音色选项 - 按分类组织
+        const voiceOptionsHtml = Object.entries(state.config.voices_by_category)
+            .map(([category, voices]) => {
+                const options = voices.map(voiceId => {
+                    const voice = state.config.voice_details[voiceId];
+                    if (!voice) return '';
+                    const selected = voiceId === speaker.voice_type ? 'selected' : '';
+                    return `<option value="${voiceId}" ${selected}>${voice.name} (${voice.description})</option>`;
+                }).join('');
+                
+                return `<optgroup label="${category}">${options}</optgroup>`;
+            }).join('');
+        
         return `
-            <div class="speaker-card">
+            <div class="speaker-card" data-speaker-id="${speaker.id}">
                 <div class="speaker-card-header">
                     <div class="speaker-icon">${icon}</div>
                     <div class="speaker-info">
                         <input type="text" value="${speaker.name}" 
                                data-speaker-id="${speaker.id}" 
+                               data-field="name"
                                class="speaker-name-input">
                     </div>
                 </div>
@@ -195,11 +244,79 @@ function renderSpeakers(speakers) {
                     <span class="tag">${getGenderText(speaker.gender)}</span>
                     <span class="tag">${getAgeText(speaker.age_group)}</span>
                 </div>
+                <div class="speaker-voice-config">
+                    <label>🎵 音色配置</label>
+                    <select class="speaker-voice-select" data-speaker-id="${speaker.id}" data-field="voice_type">
+                        ${voiceOptionsHtml}
+                    </select>
+                    <div class="voice-info">
+                        <small>当前: ${voiceName}</small>
+                    </div>
+                </div>
             </div>
         `;
     }).join('');
     
     elements.speakersList.innerHTML = html;
+    
+    // 绑定说话人编辑事件
+    bindSpeakerEvents();
+}
+
+// 绑定说话人编辑事件
+function bindSpeakerEvents() {
+    // 说话人名称编辑
+    document.querySelectorAll('.speaker-name-input').forEach(input => {
+        input.addEventListener('change', handleSpeakerUpdate);
+    });
+    
+    // 音色选择
+    document.querySelectorAll('.speaker-voice-select').forEach(select => {
+        select.addEventListener('change', handleSpeakerUpdate);
+    });
+}
+
+// 处理说话人信息更新
+async function handleSpeakerUpdate(event) {
+    const speakerId = event.target.dataset.speakerId;
+    const field = event.target.dataset.field;
+    const value = event.target.value;
+    
+    try {
+        const response = await fetch(`/api/projects/${state.currentProjectId}/speaker/${speakerId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ [field]: value })
+        });
+        
+        if (!response.ok) {
+            throw new Error('更新失败');
+        }
+        
+        // 更新本地状态
+        const speaker = state.currentProject.speakers.find(s => s.id === speakerId);
+        if (speaker) {
+            speaker[field] = value;
+        }
+        
+        // 如果更新的是音色，显示成功提示并更新显示
+        if (field === 'voice_type') {
+            const voiceName = state.config.voice_details[value]?.name || '未知';
+            showSuccess(`已更新音色为: ${voiceName}`);
+            
+            // 更新音色信息显示
+            const speakerCard = event.target.closest('.speaker-card');
+            const voiceInfo = speakerCard.querySelector('.voice-info small');
+            if (voiceInfo) {
+                voiceInfo.textContent = `当前: ${voiceName}`;
+            }
+        } else {
+            console.log(`✅ 已更新 ${field}: ${value}`);
+        }
+        
+    } catch (error) {
+        showError('更新失败: ' + error.message);
+    }
 }
 
 // 渲染对话列表
@@ -350,6 +467,32 @@ async function handleRegenerateLine(event) {
     }
 }
 
+// 处理预览已生成的音频
+async function handlePreviewAudio() {
+    if (!state.currentProject?.output_audio) {
+        showError('没有找到已生成的音频');
+        return;
+    }
+    
+    try {
+        // 构造音频URL
+        const audioPath = state.currentProject.output_audio.replace(/\\/g, '/');
+        const filename = audioPath.split('/').pop();
+        const audioUrl = `/audio/${filename}`;
+        
+        // 设置音频播放器
+        elements.finalAudio.src = audioUrl;
+        elements.downloadLink.href = audioUrl;
+        
+        // 显示预览页面
+        showStep('preview');
+        showSuccess('已加载生成的音频');
+        
+    } catch (error) {
+        showError('加载音频失败: ' + error.message);
+    }
+}
+
 // 处理生成全部音频
 async function handleGenerateAll() {
     if (!confirm(`确定要生成全部 ${state.currentProject.dialogues.length} 句对话的音频吗? 这可能需要一些时间。`)) {
@@ -369,9 +512,17 @@ async function handleGenerateAll() {
         
         const data = await response.json();
         
+        // 更新本地状态
+        if (state.currentProject) {
+            state.currentProject.output_audio = data.output_audio || data.audio_url;
+        }
+        
         // 设置音频播放器
         elements.finalAudio.src = data.audio_url;
         elements.downloadLink.href = data.audio_url;
+        
+        // 更新预览按钮显示
+        updatePreviewButton();
         
         // 显示预览页面
         showStep('preview');

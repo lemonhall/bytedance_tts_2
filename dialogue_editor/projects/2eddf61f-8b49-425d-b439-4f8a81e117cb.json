@@ -1,0 +1,206 @@
+{
+  "version": "1.0",
+  "title": "对话_20251017_170019",
+  "original_text": "“不好意思，请问这个位置有人吗？”\n\n“没有，请坐吧……等等，你是？李静？”\n\n“王浩？天啊，太巧了！怎么会在这里碰到你？”\n\n“是啊，我都快认不出你了！听说你毕业后就去南方了？”\n\n“对，在深圳待了八年，上周刚调回分公司。你呢？还在做建筑设计吗？”\n\n“早就不做啦，转行做了室内设计，自己开了个小工作室。”\n\n“真不错，这行很适合你！我记得你大学时就特别有审美。”\n\n“别提了，混口饭吃。对了，你怎么样？一个人来的？”\n\n“约了客户谈事情，还有一会儿。看到这边书架上的书挺有意思，就过来翻翻。”\n\n“真好……我们得有，五六年没见了吧？”\n\n“整整七年了！时间过得真快。”\n\n“既然你回来了，以后常联系啊！我知道有家馆子，就我们大学时常去的那家，居然还开着。”\n\n“你说‘老地方’？太好了！那我们必须得找时间一起去，好好聊聊！”\n\n“那就说定了！哦，你客户是不是快到了？我们加个微信吧？”\n\n“好，保持联系！”",
+  "speakers": [
+    {
+      "id": "speaker_1",
+      "name": "说话人A",
+      "gender": "male",
+      "age_group": "adult",
+      "voice_type": "zh_female_vv_uranus_bigtts"
+    },
+    {
+      "id": "speaker_2",
+      "name": "说话人B",
+      "gender": "female",
+      "age_group": "adult",
+      "voice_type": "zh_male_ruyayichen_saturn_bigtts"
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "line_0",
+      "speaker_id": "speaker_1",
+      "text": "“不好意思，请问这个位置有人吗？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": null,
+      "audio_file": "dialogue_output\\line_000.wav",
+      "duration": null
+    },
+    {
+      "id": "line_1",
+      "speaker_id": "speaker_2",
+      "text": "“没有，请坐吧……等等，你是？李静？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“不好意思，请问这个位置有人吗？”",
+      "audio_file": "dialogue_output\\line_001.wav",
+      "duration": null
+    },
+    {
+      "id": "line_2",
+      "speaker_id": "speaker_1",
+      "text": "“王浩？天啊，太巧了！怎么会在这里碰到你？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“没有，请坐吧……等等，你是？李静？”",
+      "audio_file": "dialogue_output\\line_002.wav",
+      "duration": null
+    },
+    {
+      "id": "line_3",
+      "speaker_id": "speaker_2",
+      "text": "“是啊，我都快认不出你了！听说你毕业后就去南方了？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“王浩？天啊，太巧了！怎么会在这里碰到你？”",
+      "audio_file": "dialogue_output\\line_003.wav",
+      "duration": null
+    },
+    {
+      "id": "line_4",
+      "speaker_id": "speaker_1",
+      "text": "“对，在深圳待了八年，上周刚调回分公司。你呢？还在做建筑设计吗？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“是啊，我都快认不出你了！听说你毕业后就去南方了？”",
+      "audio_file": "dialogue_output\\line_004.wav",
+      "duration": null
+    },
+    {
+      "id": "line_5",
+      "speaker_id": "speaker_2",
+      "text": "“早就不做啦，转行做了室内设计，自己开了个小工作室。”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“对，在深圳待了八年，上周刚调回分公司。你呢？还在做建筑设计吗？”",
+      "audio_file": "dialogue_output\\line_005.wav",
+      "duration": null
+    },
+    {
+      "id": "line_6",
+      "speaker_id": "speaker_1",
+      "text": "“真不错，这行很适合你！我记得你大学时就特别有审美。”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“早就不做啦，转行做了室内设计，自己开了个小工作室。”",
+      "audio_file": "dialogue_output\\line_006.wav",
+      "duration": null
+    },
+    {
+      "id": "line_7",
+      "speaker_id": "speaker_2",
+      "text": "“别提了，混口饭吃。对了，你怎么样？一个人来的？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“真不错，这行很适合你！我记得你大学时就特别有审美。”",
+      "audio_file": "dialogue_output\\line_007.wav",
+      "duration": null
+    },
+    {
+      "id": "line_8",
+      "speaker_id": "speaker_1",
+      "text": "“约了客户谈事情，还有一会儿。看到这边书架上的书挺有意思，就过来翻翻。”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“别提了，混口饭吃。对了，你怎么样？一个人来的？”",
+      "audio_file": "dialogue_output\\line_008.wav",
+      "duration": null
+    },
+    {
+      "id": "line_9",
+      "speaker_id": "speaker_2",
+      "text": "“真好……我们得有，五六年没见了吧？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“约了客户谈事情，还有一会儿。看到这边书架上的书挺有意思，就过来翻翻。”",
+      "audio_file": "dialogue_output\\line_009.wav",
+      "duration": null
+    },
+    {
+      "id": "line_10",
+      "speaker_id": "speaker_1",
+      "text": "“整整七年了！时间过得真快。”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“真好……我们得有，五六年没见了吧？”",
+      "audio_file": "dialogue_output\\line_010.wav",
+      "duration": null
+    },
+    {
+      "id": "line_11",
+      "speaker_id": "speaker_2",
+      "text": "“既然你回来了，以后常联系啊！我知道有家馆子，就我们大学时常去的那家，居然还开着。”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“整整七年了！时间过得真快。”",
+      "audio_file": "dialogue_output\\line_011.wav",
+      "duration": null
+    },
+    {
+      "id": "line_12",
+      "speaker_id": "speaker_1",
+      "text": "“你说‘老地方’？太好了！那我们必须得找时间一起去，好好聊聊！”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“既然你回来了，以后常联系啊！我知道有家馆子，就我们大学时常去的那家，居然还开着。”",
+      "audio_file": "dialogue_output\\line_012.wav",
+      "duration": null
+    },
+    {
+      "id": "line_13",
+      "speaker_id": "speaker_2",
+      "text": "“那就说定了！哦，你客户是不是快到了？我们加个微信吧？”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“你说‘老地方’？太好了！那我们必须得找时间一起去，好好聊聊！”",
+      "audio_file": "dialogue_output\\line_013.wav",
+      "duration": null
+    },
+    {
+      "id": "line_14",
+      "speaker_id": "speaker_1",
+      "text": "“好，保持联系！”",
+      "emotion": "中性",
+      "speed_ratio": 1.0,
+      "volume_ratio": 1.0,
+      "pitch_ratio": 1.0,
+      "context": "“那就说定了！哦，你客户是不是快到了？我们加个微信吧？”",
+      "audio_file": "dialogue_output\\line_014.wav",
+      "duration": null
+    }
+  ],
+  "output_audio": "dialogue_output/2eddf61f-8b49-425d-b439-4f8a81e117cb_final.wav",
+  "created_at": "2025-10-17T17:00:19.226442",
+  "updated_at": "2025-10-17T17:01:19.870689"
+}
